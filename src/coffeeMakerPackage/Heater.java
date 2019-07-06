@@ -2,7 +2,7 @@ package coffeeMakerPackage;
 
 public class Heater {
 	private Boolean state;
-	Sensor sensor = new Sensor();
+	Sensor sensor = new Sensor(null);
 	
 	Heater(Sensor s) {
 		this.state = false; //turn off by default

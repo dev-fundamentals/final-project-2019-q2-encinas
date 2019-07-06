@@ -7,8 +7,7 @@ public class PotTest {
 	
 	@Test
 	public void isEmpty_emptyPot_resultTrue() {
-		PlateSensor sensor = new PlateSensor();
-		sensor.setState(State.POTEMPTY);
+		PlateSensor sensor = new PlateSensor(State.POTEMPTY);
 		PlateHeater plateHeater = new PlateHeater(sensor);
 		Pot pot = new Pot(plateHeater);
 		assertTrue(pot.isEmpty());
@@ -16,8 +15,7 @@ public class PotTest {
 	
 	@Test
 	public void isEmpty_notEmptyPot_resultFalse() {
-		PlateSensor sensor = new PlateSensor();
-		sensor.setState(State.POTNOTEMPTY);
+		PlateSensor sensor = new PlateSensor(State.POTNOTEMPTY);
 		PlateHeater plateHeater = new PlateHeater(sensor);
 		Pot pot = new Pot(plateHeater);
 		assertFalse(pot.isEmpty());
@@ -31,7 +29,7 @@ public class PotTest {
 	
 	@Test
 	public void isPotInPlate_notNullSensor_resultFalse() {
-		PlateHeater plateHeater = new PlateHeater(new Sensor());
+		PlateHeater plateHeater = new PlateHeater(new Sensor(null));
 		Pot pot = new Pot(plateHeater);
 		assertNotNull(pot.getPlateHeater());
 	}

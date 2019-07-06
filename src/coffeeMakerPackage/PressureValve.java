@@ -17,6 +17,7 @@ public class PressureValve {
 	} 
 	
 	public void close() {
+		System.out.println("Closing valve...");
 		this.state = false;
 	}
 }

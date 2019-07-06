@@ -4,11 +4,9 @@ public class CoffeeMaker {
 	Boolean lights;
 	PressureValve valve = new PressureValve();
 	
-	PlateSensor plateSensor = new PlateSensor();
-	PlateHeater plateHeater = new PlateHeater(plateSensor);
-	Pot pot = new Pot(plateHeater);
+	Pot pot = new Pot(null);
 	
-	WaterSensor waterSensor = new WaterSensor();
+	WaterSensor waterSensor = new WaterSensor(State.BOILEREMPTY);
 	BoilerHeater boilerHeater = new BoilerHeater(waterSensor);
 	Boiler boiler = new Boiler(boilerHeater);	
 	
@@ -19,47 +17,35 @@ public class CoffeeMaker {
 		//valve = new PressureValve();
 	}
 	
-	/*public void brew() {
-		System.out.println("Verifying if pressure valve is open...");
-		if(valveIsOpen()) {
-			System.out.println("Closing valve...");
-			valve.close();
-		}
-	}*/
-	
 	public void brew() {
-		System.out.println("Verifying if pressure valve is open...");
 		// First, verify if valve is open...
-		if(valveIsOpen()) {
-			System.out.println("Please close the valve...");
+		System.out.println("Verifying if pressure-relief valve is open...");
+		if(valve.getState()) {
+			System.out.println("Please close the valve.");
+			return;
 		}
 		// Second, verify if there is water in boiler...
-		if(existWaterInBoiler()) {
-			System.out.println("The boiler does not have water, please will water...");
+		System.out.println("Verifying if there is enough water in the boiler...");
+		if(boiler.isEmpty()) {
+			System.out.println("The boiler does not have water. Please will water.");
+			return;
 		}
 		// Third, verify if the pot is in the plate heater
 		if(!pot.hasPlateHeater()) {
-			System.out.println("The Pot is not in the plate heater, please put the pot in plate...");
+			System.out.println("The Pot is not in the plate heater. Please put the pot in plate.");
+			return;
 		}
 		
 	}
 	
 	public void fillCoffee(int numberOfCups) {
-		System.out.println("Preparing " + numberOfCups + "cups...");
-		
-		if(!valveIsOpen() && existWaterInBoiler() && pot.hasPlateHeater()) {
+		if(!valve.getState() && !boiler.isEmpty() && pot.hasPlateHeater()) {
+			System.out.println("Preparing " + numberOfCups + " cups...");
+			System.out.println("Coffee drips through the filter into the pot...");
 			filter.filterIntoPot();
+			System.out.println("If there is coffee in Pot, activating plate heater...");
+			pot.getPlateHeater().setState(true); // activating plate heater
+			this.lights = true; //activating lights
 		}
-				
-	}
-	
-	private Boolean valveIsOpen() {
-		System.out.println("Verifying if pressure-relief valve is open...");
-		return valve.getState();
-	}
-	
-	private Boolean existWaterInBoiler() {
-		System.out.println("Verifying if there is enough water in the boiler...");
-		return boiler.isEmpty();
-	}
+	}	
 }

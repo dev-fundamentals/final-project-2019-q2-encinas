@@ -8,7 +8,6 @@ public class Filter {
 	}
 	
 	public void filterIntoPot() {
-		System.out.println("Coffee drips through the filter into the pot...");
 		pot.getPlateHeater().sensor.setState(State.POTNOTEMPTY);
 	}
 }
